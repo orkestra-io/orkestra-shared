@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"net/rpc"
 
-	"github.com/orkestra-io/orkestra-shared/proto"
-
 	"github.com/hashicorp/go-plugin"
+	"github.com/orkestra-io/orkestra-shared/proto"
 	"google.golang.org/grpc"
 )
 
