@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package proto;
 
-option go_package = "orkestra/proto";
+option go_package = "./proto";
 
 // Message vide pour les requêtes sans paramètres
 message Empty {}
