@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "orkestra/proto";
+
+// Message vide pour les requêtes sans paramètres
+message Empty {}
+
+// Le contrat pour un nœud, optimisé pour la communication gRPC
+message Node {
+  string Id = 1;
+  string Uses = 2;
+  bytes With = 3;        // Les paramètres, sérialisés en JSON
+  repeated string Needs = 4;
+  repeated Node Do = 5;  // Pour les boucles, la récursion est gérée
+  bytes Retries = 6;     // La structure Retries, sérialisée en JSON
+  repeated Node OnFailure = 7;
+}
+
+// Le contrat pour le contexte d'exécution
+message ExecutionContext {
+  bytes TriggerData = 1; // Sérialisé en JSON
+  bytes NodeOutputs = 2; // Sérialisé en JSON
+  map<string, string> Secrets = 3;
+  bytes CurrentItem = 4; // Sérialisé en JSON
+  bytes FailureData = 5; // Sérialisé en JSON
+}
+
+// La requête pour exécuter un nœud
+message ExecuteRequest {
+  Node node = 1;
+  ExecutionContext context = 2;
+}
+
+// La réponse de l'exécution d'un nœud
+message ExecuteResponse {
+  bytes result = 1; // Le résultat, sérialisé en JSON
+}
+
+// La réponse de la fonction GetCapabilities
+message GetCapabilitiesResponse {
+  repeated string uses = 1;
+}
+
+// Le service gRPC que chaque plugin doit implémenter
+service NodeExecutor {
+  rpc Execute(ExecuteRequest) returns (ExecuteResponse);
+  rpc GetCapabilities(Empty) returns (GetCapabilitiesResponse);
+}
+

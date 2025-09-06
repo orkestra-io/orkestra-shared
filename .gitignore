@@ -30,3 +30,6 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+proto/orkestra_grpc.pb.go
+proto/orkestra.pb.go
